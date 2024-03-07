@@ -1,0 +1,54 @@
+FROM php:8.1-fpm
+
+# Install Ruby
+RUN apt-get update && apt-get install -y -q git rake ruby-ronn zlib1g-dev && apt-get clean
+# Install Perl and Protoc
+RUN cd /usr/local/bin && curl -sS https://getcomposer.org/installer | php
+RUN cd /usr/local/bin && mv composer.phar composer
+RUN pecl install grpc
+RUN mkdir -p /tmp/protoc && \
+    curl -L https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip > /tmp/protoc/protoc.zip && \
+    cd /tmp/protoc && \
+    unzip protoc.zip && \
+    cp /tmp/protoc/bin/protoc /usr/local/bin && \
+    cd /tmp && \
+    rm -r /tmp/protoc && \
+    docker-php-ext-enable grpc
+
+# Install Nginx
+RUN apt-get install -y nginx
+RUN php -r "echo extension_loaded('grpc') ? 'yes' : 'no';"
+
+
+# Copy Config to Nginx
+RUN rm /etc/nginx/sites-enabled/default
+RUN rm /etc/nginx/sites-available/default
+COPY ../../config/laravel-nginx/laravel /etc/nginx/laravel.template
+COPY ../../config/laravel-nginx/laravel /etc/nginx/sites-enabled/default
+RUN ln /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
+
+# Copy index page for page testing
+COPY ../../config/html/index.php /var/www/html/public/index.php
+
+# Enable extension GD
+RUN apt-get install -y libpng-dev
+RUN docker-php-ext-install gd && docker-php-ext-enable gd
+# Enable extension zip
+RUN apt-get install -y libzip-dev
+RUN docker-php-ext-install zip && docker-php-ext-enable zip
+
+# Install gettext-base for envsubt
+RUN apt-get -y install gettext-base
+# Environment Variable
+ENV NGINX_HOST localhost
+# Exec Script for Startup
+COPY ../../config/script/run.sh /run.sh
+RUN chmod 777 /run.sh
+RUN /bin/sh /run.sh
+
+# Run nginx in background
+CMD php-fpm -F & nginx -g "daemon off;"
+
+# Port
+EXPOSE 80
+EXPOSE 443

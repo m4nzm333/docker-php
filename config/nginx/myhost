@@ -1,0 +1,18 @@
+server {
+  listen 0.0.0.0:80;
+  server_name ${NGINX_HOST};
+
+  root /var/www/html/;
+  index index.php index.html index.htm;
+
+  location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+  }
+
+  location ~ \.php$ {
+    # fastcgi_pass [PHP_FPM_LINK_NAME]:9000;
+    fastcgi_pass localhost:9000;
+    fastcgi_index index.php;
+    include fastcgi.conf;
+  }
+}

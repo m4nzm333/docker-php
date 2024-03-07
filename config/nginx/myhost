@@ -1,6 +1,5 @@
 server {
   listen 0.0.0.0:80;
-  server_name ${NGINX_HOST};
 
   root /var/www/html/;
   index index.php index.html index.htm;

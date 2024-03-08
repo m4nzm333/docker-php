@@ -44,7 +44,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 # Install nginx
 RUN apk add nginx
-COPY config/nginx/myhost /etc/nginx/http.d/default.conf
+COPY config/nginx/myhost /etc/nginx/conf.d/default.conf
 RUN mkdir -p /run/nginx
 
 # Copy base index.php for testing

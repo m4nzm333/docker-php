@@ -32,6 +32,11 @@ RUN docker-php-ext-install \
     bcmath \
     soap
 
+# Install PHP GD extension
+RUN apk add --no-cache libpng-dev freetype-dev libjpeg-turbo-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
+
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \

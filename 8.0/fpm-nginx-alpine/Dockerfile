@@ -37,16 +37,24 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');"
 
+# Install bash
+RUN apk add bash
+
 # Install nginx
 RUN apk add nginx
 COPY config/nginx/myhost /etc/nginx/http.d/default.conf
 
+# Copy FPM config
+COPY config/php-fpm/www.conf.default /usr/local/etc/php-fpm.d/www.conf.default
+COPY config/php-fpm/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+
 # Copy base index.php for testing
 COPY config/html/index.php /var/www/html/public/index.php
-# Script
-ADD config/script/start.sh /
-RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+# Script
+ADD config/script/start.bash /
+RUN chmod +x /start.bash
+
+CMD ["bash", "/start.bash"]
 
 EXPOSE 80

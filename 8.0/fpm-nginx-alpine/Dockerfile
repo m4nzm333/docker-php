@@ -40,6 +40,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # Install bash
 RUN apk add bash
 
+# Custom php.ini
+COPY 8.0/php.ini /usr/local/etc/php/php.ini
+
 # Install nginx
 RUN apk add nginx
 COPY config/nginx/myhost /etc/nginx/http.d/default.conf

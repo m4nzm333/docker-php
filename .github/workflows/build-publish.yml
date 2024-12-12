@@ -34,11 +34,17 @@ jobs:
           # Disable immediate exit on error to continue processing
           set +e
 
-          # Loop through each folder and build/push the image, excluding /config
+          # Loop through each folder and build/push the image, excluding folders that don't contain a Dockerfile
           for dir in */*; do
-            # Skip the /config folder
+            # Skip directories without a Dockerfile (including the /config directory)
+            if [[ ! -f "$dir/Dockerfile" ]]; then
+              echo "Skipping $dir (no Dockerfile found)"
+              continue
+            fi
+
+            # Skip the /config folder from being used as an image (but still copy files from it)
             if [[ "$dir" == *"/config"* ]]; then
-              echo "Skipping $dir"
+              echo "Skipping $dir as it does not contain a Dockerfile for building an image"
               continue
             fi
 

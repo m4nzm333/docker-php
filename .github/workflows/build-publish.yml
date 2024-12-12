@@ -31,6 +31,9 @@ jobs:
       # Build and push the Docker images
       - name: Build and push Docker images
         run: |
+          # Disable immediate exit on error to continue processing
+          set +e
+
           # Loop through each folder and build/push the image, excluding /config
           for dir in */*; do
             # Skip the /config folder
@@ -46,7 +49,14 @@ jobs:
               image_name="m4nzm333/php:${version}-${tag}"
               echo "Building image: $image_name"
 
-              # Build and push the Docker image
+              # Try to build and push the Docker image
               docker buildx build --push --tag $image_name $dir
+              if [ $? -ne 0 ]; then
+                echo "Build failed for image: $image_name, skipping..."
+                continue
+              fi
             fi
           done
+
+          # Re-enable immediate exit on error
+          set -e

@@ -10,6 +10,8 @@ server {
     try_files $uri $uri/ /index.php$is_args$args;
   }
 
+  server_tokens off;
+
   location ~ \.php$ {
     # fastcgi_pass [PHP_FPM_LINK_NAME]:9000;
     fastcgi_pass localhost:9000;

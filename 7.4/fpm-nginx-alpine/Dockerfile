@@ -37,6 +37,9 @@ RUN docker-php-ext-install \
 RUN pecl install mcrypt-1.0.4 \
     && docker-php-ext-enable mcrypt
 
+# Install bash
+RUN apk add bash
+
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
@@ -47,11 +50,12 @@ RUN apk add nginx
 COPY config/nginx/myhost /etc/nginx/http.d/default.conf
 
 # Copy base index.php for testing
-COPY config/html/index.php /var/www/html/index.php
-# Script
-ADD config/script/start.sh /
-RUN chmod +x /start.sh
+COPY config/html/index.php /var/www/html/public/index.php
 
-CMD ["/start.sh"]
+# Script
+ADD config/script/start.bash /
+RUN chmod +x /start.bash
+
+CMD ["bash", "/start.bash"]
 
 EXPOSE 80

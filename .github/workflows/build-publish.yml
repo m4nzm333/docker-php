@@ -31,12 +31,15 @@ jobs:
       # Build and push the Docker images
       - name: Build and push Docker images
         run: |
+          # Ensure we are in the root of the repository
+          cd $GITHUB_WORKSPACE
+
           # Disable immediate exit on error to continue processing
           set +e
 
           # Loop through each folder and build/push the image, excluding folders that don't contain a Dockerfile
           for dir in */*; do
-            # Skip directories without a Dockerfile (including the /config directory)
+            # Skip directories that don't contain a Dockerfile (including /config)
             if [[ ! -f "$dir/Dockerfile" ]]; then
               echo "Skipping $dir (no Dockerfile found)"
               continue
@@ -55,8 +58,8 @@ jobs:
               image_name="m4nzm333/php:${version}-${tag}"
               echo "Building image: $image_name"
 
-              # Try to build and push the Docker image
-              docker buildx build --push --tag $image_name $dir
+              # Build and push Docker image, using -f to explicitly specify the Dockerfile location
+              docker buildx build --push --tag $image_name -f $dir/Dockerfile $GITHUB_WORKSPACE/$dir
               if [ $? -ne 0 ]; then
                 echo "Build failed for image: $image_name, skipping..."
                 continue

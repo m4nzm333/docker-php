@@ -59,7 +59,7 @@ jobs:
               echo "Building image: $image_name"
 
               # Build and push Docker image, using -f to explicitly specify the Dockerfile location
-              docker buildx build --push --tag $image_name -f $dir/Dockerfile $GITHUB_WORKSPACE/$dir
+              docker buildx build --push --tag $image_name -f $dir/Dockerfile $GITHUB_WORKSPACE
               if [ $? -ne 0 ]; then
                 echo "Build failed for image: $image_name, skipping..."
                 continue

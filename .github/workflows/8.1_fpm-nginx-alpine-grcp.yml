@@ -24,4 +24,5 @@ jobs:
         with:
           context: .
           push: true
+          file: 8.1/fpm-nginx-alpine-grcp/Dockerfile
           tags: ${{ secrets.DOCKER_USERNAME }}/php:8.1-fpm-nginx-alpine-grcp

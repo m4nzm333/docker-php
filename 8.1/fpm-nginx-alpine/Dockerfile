@@ -41,6 +41,10 @@ RUN apk add --no-cache libpng-dev freetype-dev libjpeg-turbo-dev \
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && php -r "unlink('composer-setup.php');"
+
+# Copy PHP ini
+COPY 8.1/php.ini-production /usr/local/etc/php/php.ini
+
 # Install nginx
 RUN apk add nginx
 # COPY config/nginx/nginx.conf /etc/nginx/nginx.conf 

@@ -3,7 +3,7 @@
 
 ![Docker Build](https://img.shields.io/badge/build-passing-brightgreen)
 
-Multi-version PHP-FPM Docker images with Nginx, based on Alpine Linux. Supports PHP 5.6, 7.1, 7.4, 8.0, and 8.1. Each version includes common PHP extensions, Composer, and is ready for development, testing, staging, uat, or production.
+Multi-version PHP-FPM Docker images with Nginx, based on Alpine Linux. Supports PHP 5.6, 7.1, 7.4, 8.0, 8.1, 8.2, and 8.4. Each version includes common PHP extensions, Composer, and is ready for development, testing, staging, uat, or production.
 
 ## Supported Tags and Versions
 
@@ -14,6 +14,7 @@ Multi-version PHP-FPM Docker images with Nginx, based on Alpine Linux. Supports 
 - `8.1-fpm-nginx-alpine`
 - `8.1-fpm-nginx-alpine-grcp`
 - `8.2-fpm-nginx-alpine`
+- `8.4-fpm-nginx-alpine`
 
 ## Features
 

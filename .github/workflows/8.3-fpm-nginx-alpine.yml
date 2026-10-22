@@ -1,6 +1,7 @@
-name: Publish docker image
+name: Publish docker image 8.3-fpm-nginx-alpine
 run-name: ${{ github.actor }} is Publishing Package to npmjs with version ${{ github.ref_name }}
 on:
+  workflow_dispatch:
   push:
     branches:
       - 8.3-fpm-nginx-alpine

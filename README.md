@@ -14,6 +14,7 @@ Multi-version PHP-FPM Docker images with Nginx, based on Alpine Linux. Supports 
 - `8.1-fpm-nginx-alpine`
 - `8.1-fpm-nginx-alpine-grcp`
 - `8.2-fpm-nginx-alpine`
+- `8.2-fpm-nginx-alpine-grpc`
 - `8.3-fpm-nginx-alpine`
 - `8.4-fpm-nginx-alpine`
 
